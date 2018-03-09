@@ -7,32 +7,38 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var Cfg = Config{}
-
-type Config struct {
-	lookupDone map[string]bool
-	variables  map[string]interface{}
+var Cfg = Config{
+	lookupDone: map[interface{}]bool{},
+	variables:  map[interface{}]interface{}{},
 }
 
-func (cfg *Config) SetDefault(name string, value interface{}) {
+type Config struct {
+	lookupDone map[interface{}]bool
+	variables  map[interface{}]interface{}
+}
+
+func (cfg *Config) SetDefault(name interface{}, value interface{}) {
 	cfg.variables[name] = value
 }
 
-func (cfg *Config) SetDefaults(defaults map[string]interface{}) {
+func (cfg *Config) SetDefaults(defaults map[interface{}]interface{}) {
 	for k, v := range defaults {
 		cfg.SetDefault(k, v)
 	}
 }
 
-func (cfg *Config) Get(name string) (interface{}, error) {
+func (cfg *Config) Get(name interface{}) (interface{}, error) {
 	if !cfg.lookupDone[name] {
 		log.Debugf("Configuration: New lookup for variable '%s'.", name)
 
 		cfg.lookupDone[name] = true
-		env := os.Getenv(name)
 
-		if env != "" {
-			cfg.variables[name] = env
+		if stringName, ok := name.(string); ok {
+			env := os.Getenv(stringName)
+
+			if env != "" {
+				cfg.variables[name] = env
+			}
 		}
 	}
 
