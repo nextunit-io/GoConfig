@@ -11,20 +11,20 @@ var Cfg = Config{}
 
 type Config struct {
 	lookupDone map[string]bool
-	variables  map[string]string
+	variables  map[string]interface{}
 }
 
-func (cfg *Config) SetDefault(name, value string) {
+func (cfg *Config) SetDefault(name string, value interface{}) {
 	cfg.variables[name] = value
 }
 
-func (cfg *Config) SetDefaults(defaults map[string]string) {
+func (cfg *Config) SetDefaults(defaults map[string]interface{}) {
 	for k, v := range defaults {
 		cfg.SetDefault(k, v)
 	}
 }
 
-func (cfg *Config) Get(name string) (string, error) {
+func (cfg *Config) Get(name string) (interface{}, error) {
 	if !cfg.lookupDone[name] {
 		log.Debugf("Configuration: New lookup for variable '%s'.", name)
 
