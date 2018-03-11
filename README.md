@@ -18,36 +18,36 @@ func init() {
 }
 
 func main() {
-	val, err := config.Cfg.Get("TEST_ENTRY_ONE")
-	if err == nil {
-		fmt.Printf("Found entry for 'TEST_ENTRY_ONE': %s", val.(string))
-	}
-
-	val, err = config.Cfg.Get("TEST_ENTRY_TWO")
-	if err == nil {
-		if val.(bool) {
-			fmt.Print("Found entry for 'TEST_ENTRY_TWO' and it is true")
-		}
+    val, err := config.Cfg.Get("TEST_ENTRY_ONE")
+    if err == nil {
+        fmt.Printf("Found entry for 'TEST_ENTRY_ONE': %s", val.(string))
     }
-    
+
+    val, err = config.Cfg.Get("TEST_ENTRY_TWO")
+    if err == nil {
+        if val.(bool) {
+            fmt.Print("Found entry for 'TEST_ENTRY_TWO' and it is true")
+        }
+    }
+
     os.Setenv("TEST_ENTRY_THREE", "Overridden config")
     val, err = config.Cfg.Get("TEST_ENTRY_THREE")
-	if err == nil {
-		fmt.Printf("Found entry for 'TEST_ENTRY_THREE': %s", val.(string))
-	}
+    if err == nil {
+        fmt.Printf("Found entry for 'TEST_ENTRY_THREE': %s", val.(string))
+    }
 
-	val, err = config.Cfg.Get("TEST_INVALID_ENTRY")
-	if err != nil {
-		fmt.Print("No entry for 'TEST_INVALID_ENTRY' found.")
-	}
+    val, err = config.Cfg.Get("TEST_INVALID_ENTRY")
+    if err != nil {
+        fmt.Print("No entry for 'TEST_INVALID_ENTRY' found.")
+    }
 }
 
 func createDefaultConfig() {
-	config.Cfg.SetDefaults(map[interface{}]interface{}{
-		"TEST_ENTRY_ONE": "this-is-the-value",
-		"TEST_ENTRY_TWO": true,
-		"TEST_ENTRY_THREE": "hidden",
-	})
+    config.Cfg.SetDefaults(map[interface{}]interface{}{
+        "TEST_ENTRY_ONE": "this-is-the-value",
+        "TEST_ENTRY_TWO": true,
+        "TEST_ENTRY_THREE": "hidden",
+    })
 }
 ```
 
