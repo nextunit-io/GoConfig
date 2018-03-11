@@ -29,6 +29,9 @@ func TestConfiguration(t *testing.T) {
 	Cfg.SetDefault("test8", "invalid")
 	os.Setenv("test8", "bla")
 	testGetValue(t, "test8", "bla")
+
+	_, err := Cfg.Get("invalid_not_used")
+	assert.Equal(t, err, VariableNotFoundError)
 }
 
 func testGetValue(t *testing.T, name string, expected interface{}) {

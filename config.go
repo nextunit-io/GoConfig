@@ -7,10 +7,14 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var Cfg = Config{
-	lookupDone: map[interface{}]bool{},
-	variables:  map[interface{}]interface{}{},
-}
+var (
+	Cfg = Config{
+		lookupDone: map[interface{}]bool{},
+		variables:  map[interface{}]interface{}{},
+	}
+
+	VariableNotFoundError = errors.New("Variable not found")
+)
 
 type Config struct {
 	lookupDone map[interface{}]bool
@@ -47,5 +51,5 @@ func (cfg *Config) Get(name interface{}) (interface{}, error) {
 	}
 
 	log.Errorf("Configuration: Variable '%s' not found.", name)
-	return "", errors.New("Variable not found")
+	return "", VariableNotFoundError
 }
